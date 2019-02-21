@@ -1,4 +1,3 @@
-from data import tenPlayerHoleWinOdds, eightPlayerHoleWinOdds, sixPlayerHoleWinOdds, fourPlayerHoleWinOdds, threePlayerHoleWinOdds, twoPlayerHoleWinOdds, cardRanks
 from collections import Counter
 class calculator:
 
@@ -6,6 +5,8 @@ class calculator:
 		self.currOuts = 0
 		pass
 
+	# function that calculates and returns the number of outs for a given 
+	# hand and community cards
 	def outs(self, holeCards, commCards, pointOfPlay):
 		totalCards = []
 		self.currOuts = 0
@@ -58,6 +59,7 @@ class calculator:
 
 		return self.currOuts
 
+	# function that calculates the hand odds 
 	def handOdds(self, playerNum, pointOfPlay):
 		currHandOdds = 0
 		cardsLeftInDeck = 52
@@ -90,6 +92,7 @@ class calculator:
 
 		return currHandOdds
 
+	# function that calculates the pot odds
 	def potOdds(self, currBet, potSize):
 		call = currBet
 		currPotOdds = (call / (potSize + currBet))
@@ -98,6 +101,8 @@ class calculator:
 
 		return currPotOdds
 
+	# function that compares the pot odds and hand odds
+	# and gives an action (call or fold)
 	def callOrFold(self, currPotOdds, currHandOdds):
 		if (currPotOdds <= currHandOdds):
 			return True
