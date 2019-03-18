@@ -10,7 +10,7 @@ class calculator:
     def __init__(self):
         self.currOuts = 0
 
-        def outs(self, holeCards, commCards, pointOfPlay):
+    def outs(self, holeCards, commCards, pointOfPlay):
             """ Calculate the number of outs.
 
             Params:
