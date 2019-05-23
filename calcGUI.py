@@ -42,9 +42,9 @@ class App(QWidget):
 
         windowLayout = QGridLayout()
         windowLayout.addWidget(self.horizontalGroupBox, 0, 0)
-        windowLayout.addWidget(self.handBox,0,1)
-        windowLayout.addWidget(self.betAndPotBox,1,0)
-        windowLayout.addWidget(self.communityBox,1,1)
+        windowLayout.addWidget(self.handBox, 0, 1)
+        windowLayout.addWidget(self.betAndPotBox, 1, 0)
+        windowLayout.addWidget(self.communityBox, 1, 1)
         self.setLayout(windowLayout)
 
         self.show()
@@ -72,18 +72,18 @@ class App(QWidget):
 
         for x in self.cardValDict:
             if b == 4:
-                cardPickerLayout.addWidget(self.cardValDict[x],a,b)
+                cardPickerLayout.addWidget(self.cardValDict[x], a, b)
                 a = a + 1
                 b = 0
             else:
-                cardPickerLayout.addWidget(self.cardValDict[x],a,b)
+                cardPickerLayout.addWidget(self.cardValDict[x], a, b)
                 b = b + 1
 
         b = 0
-	a = a + 1
+        a = a + 1
 
         for x in self.suitButtons:
-            cardPickerLayout.addWidget(x,a,b)
+            cardPickerLayout.addWidget(x, a, b)
             b = b + 1
 
         self.horizontalGroupBox.setLayout(cardPickerLayout)
@@ -114,7 +114,7 @@ class App(QWidget):
             oddsLayout.addWidget(potOdds)
             oddsLayout.addWidget(outs)
             oddsLayout.addWidget(actionLabel)
-            handLayout.addLayout(oddsLayout, stretch = 1)
+            handLayout.addLayout(oddsLayout, stretch=1)
 
             self.handBox.setLayout(handLayout)
 
@@ -221,7 +221,7 @@ class App(QWidget):
         betSize = betEdit.text()
         potSize = potEdit.text()
 
-        if self.holeCardsCalced == False:
+        if self.holeCardsCalced is False:
             try:
                 self.cControler.setHoleHandVal()
                 self.cControler.setPlayerNum(player)
@@ -231,7 +231,7 @@ class App(QWidget):
                 self.holeCardsCalced = True
             except Exception as error:
                 self.buildErrorPopup(str(error))
-        elif self.holeCardsCalced == True and self.flopCalced == True:
+        elif self.holeCardsCalced is True and self.flopCalced is True:
             try:
                 self.cControler.checkIsInt(potSize, betSize)
                 self.cControler.setPointInPlay()
@@ -246,7 +246,7 @@ class App(QWidget):
                 self.turnCalced = True
             except Exception as error:
                 self.buildErrorPopup(str(error))
-        elif self.holeCardsCalced == True:
+        elif self.holeCardsCalced is True:
             try:
                 self.cControler.checkIsInt(potSize, betSize)
                 self.cControler.setPointInPlay()
@@ -309,7 +309,7 @@ class App(QWidget):
     # for the GUI
     def setCardPic(self, pickedCard, imagePath):
         newMap = QPixmap(imagePath)
-        pickedCard.setPixmap(newMap.scaled(144,200,Qt.KeepAspectRatio))
+        pickedCard.setPixmap(newMap.scaled(144, 200, Qt.KeepAspectRatio))
 
     # Functions that set the value and picture of the
     # hole and community cards
