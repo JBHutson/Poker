@@ -17,7 +17,7 @@ class calculator:
             holeCards -- list of hole cards
             commCards -- list of community cards
             pointOfPlay -- string indicating the point in play
-            """ 
+            """
             totalCards = []
             self.currOuts = 0
 
@@ -67,144 +67,185 @@ class calculator:
 
             return self.currOuts
 
-        def handOdds(self, playerNum, pointOfPlay):
-            """ Calculate the hand odds given number of players
-                and point of play.
+    def handOdds(self, playerNum, pointOfPlay):
+        """ Calculate the hand odds given number of players
+            and point of play.
 
-            Params:
-            playerNum -- string with number of player
-            pointOfPlay -- string showing point in play
-            """
-            currHandOdds = 0
-            cardsLeftInDeck = 52
+        Params:
+        playerNum -- string with number of player
+        pointOfPlay -- string showing point in play
+        """
+        currHandOdds = 0
+        cardsLeftInDeck = 52
 
-            if playerNum == '10 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 20
-            elif playerNum == '9 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 18
-            elif playerNum == '8 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 16
-            elif playerNum == '7 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 14
-            elif playerNum == '6 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 12
-            elif playerNum == '5 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 10
-            elif playerNum == '4 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 8
-            elif playerNum == '3 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 6
-            elif playerNum == '2 Players':
-                cardsLeftInDeck = cardsLeftInDeck - 4
+        if playerNum == '10 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 20
+        elif playerNum == '9 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 18
+        elif playerNum == '8 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 16
+        elif playerNum == '7 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 14
+        elif playerNum == '6 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 12
+        elif playerNum == '5 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 10
+        elif playerNum == '4 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 8
+        elif playerNum == '3 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 6
+        elif playerNum == '2 Players':
+            cardsLeftInDeck = cardsLeftInDeck - 4
 
-            if pointOfPlay == 'Flop':
-                cardsLeftInDeck = cardsLeftInDeck - 3
-                currHandOdds = self.flopToRiverOdds(cardsLeftInDeck)
-            elif pointOfPlay == 'Turn':
-                cardsLeftInDeck = cardsLeftInDeck - 4
-                currHandOdds = self.turnToRiverOdds(cardsLeftInDeck)
+        if pointOfPlay == 'Flop':
+            cardsLeftInDeck = cardsLeftInDeck - 3
+            currHandOdds = self.flopToRiverOdds(cardsLeftInDeck)
+        elif pointOfPlay == 'Turn':
+            cardsLeftInDeck = cardsLeftInDeck - 4
+            currHandOdds = self.turnToRiverOdds(cardsLeftInDeck)
 
-            return currHandOdds
+        return currHandOdds
 
-        def potOdds(self, currBet, potSize):
-            """ Calculate the pot odds.
+    def potOdds(self, currBet, potSize):
+        """ Calculate the pot odds.
 
-            Params:
-            currBet -- Int containing how much you have to bet
-            potSize -- Int containing the current pot size
-            """
-            call = currBet
-            currPotOdds = (call / (potSize + currBet))
-            currPotOdds = round(currPotOdds, 4)
+        Params:
+        currBet -- Int containing how much you have to bet
+        potSize -- Int containing the current pot size
+        """
+        call = currBet
+        currPotOdds = (call / (potSize + currBet))
+        currPotOdds = round(currPotOdds, 4)
 
-            return currPotOdds
+        return currPotOdds
 
-        def callOrFold(self, currPotOdds, currHandOdds):
-            """ Decide whether to call or fold.
+    def callOrFold(self, currPotOdds, currHandOdds):
+        """ Decide whether to call or fold.
 
-            Params:
-            currPotOdds -- int containing the current pot odds
-            currHandOdds -- int containing the current hand odds
-            """
-            if (currPotOdds <= currHandOdds):
-                return True
+        Params:
+        currPotOdds -- int containing the current pot odds
+        currHandOdds -- int containing the current hand odds
+        """
+        if (currPotOdds <= currHandOdds):
+            return True
+        else:
+            return False
+
+    def initialHandOdds(self, playerNum, holeCardVal):
+        """ Find the initial hand odds of pocket cards.
+
+        Params:
+        playerNum -- string containing the number of players
+        holeCardVal -- string containing the value of hole cards
+        """
+        if playerNum == '10 Players' or playerNum == '9 Players':
+            iHandOdds = tenPlayerHoleWinOdds.get(holeCardVal)
+        elif playerNum == '8 Players' or playerNum == '7 Players':
+            iHandOdds = eightPlayerHoleWinOdds.get(holeCardVal)
+        elif playerNum == '6 Players' or playerNum == '5 Players':
+            iHandOdds = sixPlayerHoleWinOdds.get(holeCardVal)
+        elif playerNum == '4 Players':
+            iHandOdds = fourPlayerHoleWinOdds.get(holeCardVal)
+        elif playerNum == '3 Players':
+            iHandOdds = threePlayerHoleWinOdds.get(holeCardVal)
+        elif playerNum == '2 Players':
+            iHandOdds = twoPlayerHoleWinOdds.get(holeCardVal)
+
+        return iHandOdds
+
+    def initialHandAction(self, playerNum, iHandOdds):
+        """ Decide whether to call or fold pocket cards.
+
+        Params:
+        playerNum -- string containing the number of players
+        iHandOdds -- int containing initial hand card odds
+        """
+        if playerNum == '10 Players':
+            if iHandOdds >= .1153:
+                return 'Call'
             else:
+                return 'Fold'
+        elif playerNum == '8 Players':
+            if iHandOdds > .1439:
+                return 'Call'
+            else:
+                return 'Fold'
+        elif playerNum == '6 Players':
+            if iHandOdds >= .181:
+                return 'Call'
+            else:
+                return 'Fold'
+        elif playerNum == '4 Players':
+            if iHandOdds >= .2674:
+                return 'Call'
+            else:
+                return 'Fold'
+        elif playerNum == '3 Players':
+            if iHandOdds >= .3533:
+                return 'Call'
+            else:
+                return 'Fold'
+        elif playerNum == '2 Players':
+            if iHandOdds >= .4796:
+                return 'Call'
+            else:
+                return 'Fold'
+
+    def checkOpenStraightDraw(self, totalCards):
+        """ Check if there is an open straight draw.
+
+        Params:
+        totalCards -- list containing all of the cards in play
+        """
+        cardRankVals = []
+        sortedCardRankVals = []
+        consecutiveCards = []
+
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardRank = cardRanks.get(cardVal)
+            cardRankVals.append(cardRank)
+
+        sortedCardRankVals = sorted(cardRankVals)
+
+        lenOfCards = len(cardRankVals)
+
+        for x in range(lenOfCards - 1):
+            if (sortedCardRankVals[x] + 1) == sortedCardRankVals[(x + 1)]:
+                if sortedCardRankVals[x] not in consecutiveCards:
+                    consecutiveCards.append(sortedCardRankVals[x])
+                if sortedCardRankVals[(x + 1)] not in consecutiveCards:
+                    consecutiveCards.append(sortedCardRankVals[(x + 1)])
+
+        if len(consecutiveCards) < 4:
+            return False
+        elif consecutiveCards[0] == 1 or consecutiveCards[-1] == 13:
+            return False
+        elif len(consecutiveCards) == 4:
+            if (consecutiveCards[0] + 1) != consecutiveCards[1]:
                 return False
+            elif (consecutiveCards[1] + 1) != consecutiveCards[2]:
+                return False
+            elif (consecutiveCards[2] + 1) != consecutiveCards[3]:
+                return False
+            else:
+                return True
 
-        def initialHandOdds(self, playerNum, holeCardVal):
-            """ Find the initial hand odds of pocket cards.
+    def checkInsideStraightDraw(self, totalCards):
+        """ Check for an inside straight draw.
 
-            Params:
-            playerNum -- string containing the number of players
-            holeCardVal -- string containing the value of hole cards
-            """
-            if playerNum == '10 Players' or playerNum == '9 Players':
-                iHandOdds = tenPlayerHoleWinOdds.get(holeCardVal)
-            elif playerNum == '8 Players' or playerNum == '7 Players':
-                iHandOdds = eightPlayerHoleWinOdds.get(holeCardVal)
-            elif playerNum == '6 Players' or playerNum == '5 Players':
-                iHandOdds = sixPlayerHoleWinOdds.get(holeCardVal)
-            elif playerNum == '4 Players':
-                iHandOdds = fourPlayerHoleWinOdds.get(holeCardVal)
-            elif playerNum == '3 Players':
-                iHandOdds = threePlayerHoleWinOdds.get(holeCardVal)
-            elif playerNum == '2 Players':
-                iHandOdds = twoPlayerHoleWinOdds.get(holeCardVal)
+        Params:
+        totalCards -- list containing all of the cards in play
+        """
+        cardRankVals = []
+        sortedCardRankVals = []
+        consecutiveCards = []
+        index = 0
 
-            return iHandOdds
-
-        def initialHandAction(self, playerNum, iHandOdds):
-            """ Decide whether to call or fold pocket cards.
-
-            Params:
-            playerNum -- string containing the number of players
-            iHandOdds -- int containing initial hand card odds
-            """
-            if playerNum == '10 Players':
-                if iHandOdds >= .1153:
-                    return 'Call'
-                else:
-                    return 'Fold'
-            elif playerNum == '8 Players':
-                if iHandOdds > .1439:
-                    return 'Call'
-                else:
-                    return 'Fold'
-            elif playerNum == '6 Players':
-                if iHandOdds >= .181:
-                    return 'Call'
-                else:
-                    return 'Fold'
-            elif playerNum == '4 Players':
-                if iHandOdds >= .2674:
-                    return 'Call'
-                else:
-                    return 'Fold'
-            elif playerNum == '3 Players':
-                if iHandOdds >= .3533:
-                    return 'Call'
-                else:
-                    return 'Fold'
-            elif playerNum == '2 Players':
-                if iHandOdds >= .4796:
-                    return 'Call'
-                else:
-                    return 'Fold'
-
-        def checkOpenStraightDraw(self, totalCards):
-            """ Check if there is an open straight draw.
-
-            Params:
-            totalCards -- list containing all of the cards in play
-            """
-            cardRankVals = []
-            sortedCardRankVals = []
-            consecutiveCards = []
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardRank = cardRanks.get(cardVal)
-                cardRankVals.append(cardRank)
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardRank = cardRanks.get(cardVal)
+            cardRankVals.append(cardRank)
 
             sortedCardRankVals = sorted(cardRankVals)
 
@@ -217,309 +258,268 @@ class calculator:
                     if sortedCardRankVals[(x + 1)] not in consecutiveCards:
                         consecutiveCards.append(sortedCardRankVals[(x + 1)])
 
-            if len(consecutiveCards) < 4:
-                return False
-            elif consecutiveCards[0] == 1 or consecutiveCards[-1] == 13:
+            if len(consecutiveCards) < 3:
                 return False
             elif len(consecutiveCards) == 4:
-                if (consecutiveCards[0] + 1) != consecutiveCards[1]:
-                    return False
-                elif (consecutiveCards[1] + 1) != consecutiveCards[2]:
-                    return False
-                elif (consecutiveCards[2] + 1) != consecutiveCards[3]:
-                    return False
-                else:
+                if (consecutiveCards[1] + 2) == consecutiveCards[2]:
                     return True
-
-        def checkInsideStraightDraw(self, totalCards):
-            """ Check for an inside straight draw.
-
-            Params:
-            totalCards -- list containing all of the cards in play
-            """
-            cardRankVals = []
-            sortedCardRankVals = []
-            consecutiveCards = []
-            index = 0
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardRank = cardRanks.get(cardVal)
-                cardRankVals.append(cardRank)
-
-                sortedCardRankVals = sorted(cardRankVals)
-
-                lenOfCards = len(cardRankVals)
-
-                for x in range(lenOfCards - 1):
-                    if (sortedCardRankVals[x] + 1) == sortedCardRankVals[(x + 1)]:
-                        if sortedCardRankVals[x] not in consecutiveCards:
-                            consecutiveCards.append(sortedCardRankVals[x])
-                        if sortedCardRankVals[(x + 1)] not in consecutiveCards:
-                            consecutiveCards.append(sortedCardRankVals[(x + 1)])
-
-                if len(consecutiveCards) < 3:
-                    return False
-                elif len(consecutiveCards) == 4:
-                    if (consecutiveCards[1] + 2) == consecutiveCards[2]:
-                        return True
-                    if consecutiveCards[0] == 1 or consecutiveCards[-1] == 13:
-                        if (consecutiveCards[0] + 1) != consecutiveCards[1]:
-                            return False
-                        elif (consecutiveCards[1] + 1) != consecutiveCards[2]:
-                            return False
-                        elif (consecutiveCards[2] + 1) != consecutiveCards[3]:
-                            return False
-                        else:
-                            return True
-                elif len(consecutiveCards) == 3:
-                    index = sortedCardRankVals.index(consecutiveCards[0])
-                    if index == 0:
-                        pass
-                    elif sortedCardRankVals[index] == (sortedCardRankVals[index - 1] + 2):
-                        return True
-
-                    index = sortedCardRankVals.index(consecutiveCards[-1])
-                    if index == (len(sortedCardRankVals) - 1):
-                            pass
-                    elif sortedCardRankVals[index] == (sortedCardRankVals[index + 1] - 2):
-                        return True
-                    else:
+                if consecutiveCards[0] == 1 or consecutiveCards[-1] == 13:
+                    if (consecutiveCards[0] + 1) != consecutiveCards[1]:
                         return False
-
-        def checkFlushDraw(self, totalCards):
-            """ Check for a flush draw.
-
-            Params:
-            totalCards -- list of all the cards in play
-            """
-            cardSuitVals = []
-
-            for card in totalCards:
-                cardSuit = card[-1]
-                cardSuitVals.append(cardSuit)
-
-                suitDict = Counter(cardSuitVals)
-
-            for val in suitDict:
-                if suitDict.get(val) == 4:
+                    elif (consecutiveCards[1] + 1) != consecutiveCards[2]:
+                        return False
+                    elif (consecutiveCards[2] + 1) != consecutiveCards[3]:
+                        return False
+                    else:
+                        return True
+            elif len(consecutiveCards) == 3:
+                index = sortedCardRankVals.index(consecutiveCards[0])
+                if index == 0:
+                    pass
+                elif sortedCardRankVals[index] == (sortedCardRankVals[index - 1] + 2):
                     return True
+
+                index = sortedCardRankVals.index(consecutiveCards[-1])
+                if index == (len(sortedCardRankVals) - 1):
+                        pass
+                elif sortedCardRankVals[index] == (sortedCardRankVals[index + 1] - 2):
+                    return True
+                else:
+                    return False
+
+    def checkFlushDraw(self, totalCards):
+        """ Check for a flush draw.
+
+        Params:
+        totalCards -- list of all the cards in play
+        """
+        cardSuitVals = []
+
+        for card in totalCards:
+            cardSuit = card[-1]
+            cardSuitVals.append(cardSuit)
+
+            suitDict = Counter(cardSuitVals)
+
+        for val in suitDict:
+            if suitDict.get(val) == 4:
+                return True
 
         return False
 
-        def checkTwoOverCardsToOverPair(self, totalCards):
-            """ Check for an over pair draw.
+    def checkTwoOverCardsToOverPair(self, totalCards):
+        """ Check for an over pair draw.
 
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
-            cardRankVals = []
-            commCardRanks = []
-            handCardRank1 = 0
-            handCardRank2 = 0
-            isHandCardOneOver = True
-            isHandCardTwoOver = True
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
+        cardRankVals = []
+        commCardRanks = []
+        handCardRank1 = 0
+        handCardRank2 = 0
+        isHandCardOneOver = True
+        isHandCardTwoOver = True
 
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
 
-            for val in cardVals:
-                cardRankVal = cardRanks.get(val)
-                cardRankVals.append(cardRankVal)
-
-                commCardRanks = cardRankVals[-2:]
-
-                handCardRank1 = cardRankVals[0]
-                handCardRank2 = cardRankVals[1]
-
-                for rank in commCardRanks:
-                    if handCardRank1 <= rank:
-                        isHandCardOneOver = False
-                        break
-
-                for rank in commCardRanks:
-                    if handCardRank2 <= rank:
-                        isHandCardTwoOver = False
-                        break
-
-                if not isHandCardOneOver or not isHandCardTwoOver:
-                    return False
-                if isHandCardOneOver and isHandCardTwoOver:
-                    return True
-
-        def checkSetToFullHouseOrFourOfAKind(self, totalCards):
-            """ Check for a full house or four of a kind draw.
-
-            Params:
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
-
-            cardDict = Counter(cardVals)
-
-            for val in cardDict:
-                if cardDict.get(val) == 3:
-                    return True
-
-            return False
-
-        def checkNoPairToPair(self, totalCards):
-            """ Check for a pair draw.
-
-            Params:
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
-
-                cardDict = Counter(cardVals)
-
-            for val in cardDict:
-                if cardDict.get(val) != 1:
-                    return False
-
-            return True
-
-        def checkOnePairToTwoPairOrSet(self, totalCards):
-            """ Check for two pair or set draw
-
-            Params:
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
-
-                cardDict = Counter(cardVals)
-
-            if cardVals[0] == cardVals[1]:
-                return False
-
-            for val in cardDict:
-                if cardDict.get(val) == 2:
-                    return True
-
-            return False
-
-        def checkTwoPairToFullHouse(self, totalCards):
-            """ Check for a full house draw.
-
-            Params:
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
-            numOfPairs = 0
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
-
-            cardDict = Counter(cardVals)
-
-            for val in cardDict:
-                if cardDict.get(val) == 2:
-                    numOfPairs = numOfPairs + 1
-
-                if numOfPairs == 2:
-                    return True
-
-            return False
-
-        def checkOneOverCardToOverPair(self, totalCards):
-            """ Check for an over pair draw.
-
-            Params:
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
-            cardRankVals = []
-            commCardRanks = []
-            handCardRank = 0
-            isHandCardOneOver = True
-            isHandCardTwoOver = True
-
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
-
-            for val in cardVals:
-                cardRankVal = cardRanks.get(val)
-                cardRankVals.append(cardRankVal)
+        for val in cardVals:
+            cardRankVal = cardRanks.get(val)
+            cardRankVals.append(cardRankVal)
 
             commCardRanks = cardRankVals[-2:]
-            handCardRank = cardRankVals[0]
+
+            handCardRank1 = cardRankVals[0]
+            handCardRank2 = cardRankVals[1]
 
             for rank in commCardRanks:
-                if handCardRank < rank:
+                if handCardRank1 <= rank:
                     isHandCardOneOver = False
                     break
 
-            handCardRank = cardRankVals[1]
-
             for rank in commCardRanks:
-                if handCardRank < rank:
+                if handCardRank2 <= rank:
                     isHandCardTwoOver = False
                     break
 
+            if not isHandCardOneOver or not isHandCardTwoOver:
+                return False
             if isHandCardOneOver and isHandCardTwoOver:
-                return False
-            elif not isHandCardOneOver and not isHandCardTwoOver:
-                return False
-            elif isHandCardOneOver or isHandCardTwoOver:
                 return True
 
-        def checkPocketPairToSet(self, totalCards):
-            """ Check for a set draw with a pocket pair.
+    def checkSetToFullHouseOrFourOfAKind(self, totalCards):
+        """ Check for a full house or four of a kind draw.
 
-            totalCards -- list of all the cards in play
-            """
-            cardVals = []
+        Params:
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
 
-            for card in totalCards:
-                cardVal = card[:-1]
-                cardVals.append(cardVal)
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
 
-            if cardVals[0] == cardVals[1]:
+        cardDict = Counter(cardVals)
+
+        for val in cardDict:
+            if cardDict.get(val) == 3:
                 return True
 
+        return False
+
+    def checkNoPairToPair(self, totalCards):
+        """ Check for a pair draw.
+
+        Params:
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
+
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
+
+            cardDict = Counter(cardVals)
+
+        for val in cardDict:
+            if cardDict.get(val) != 1:
+                return False
+
+        return True
+
+    def checkOnePairToTwoPairOrSet(self, totalCards):
+        """ Check for two pair or set draw
+
+        Params:
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
+
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
+
+            cardDict = Counter(cardVals)
+
+        if cardVals[0] == cardVals[1]:
             return False
 
-        def flopToRiverOdds(self, cardsLeftInDeck):
-            """ Calculate the odds of a winning hand flop to river.
+        for val in cardDict:
+            if cardDict.get(val) == 2:
+                return True
 
-            Params:
-            cardsLeftInDeck -- int with the number of cards left in the deck
-            """
-            flopToRiverOdds = 0
+        return False
 
-            flopToTurnCardsLeftAfterOuts = float(cardsLeftInDeck - self.currOuts)
-            flopToRiverCardsLeftInDeck = float(cardsLeftInDeck - 1)
-            flopToRiverCardsLeftAfterOuts = float(flopToRiverCardsLeftInDeck - self.currOuts)
-            cardsLeftInDeck = float(cardsLeftInDeck)
-            flopToRiverCalc = (flopToTurnCardsLeftAfterOuts/cardsLeftInDeck) * (flopToRiverCardsLeftAfterOuts/flopToRiverCardsLeftInDeck)
-            flopToRiverOdds = round((1 - flopToRiverCalc), 4)
+    def checkTwoPairToFullHouse(self, totalCards):
+        """ Check for a full house draw.
 
-            return flopToRiverOdds
+        Params:
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
+        numOfPairs = 0
 
-        def turnToRiverOdds(self, cardsLeftInDeck):
-            """ Calculate the odds of a winning hand turn to river.
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
 
-            Params:
-            cardsLeftInDeck -- int with the number of cards left in deck
-            """
-            turnToRiverOdds = 0
-            cardsLeftAfterOuts = cardsLeftInDeck - self.currOuts
-            turnToRiverCalc = (float(cardsLeftAfterOuts)/float(cardsLeftInDeck))
-            turnToRiverOdds = round((1 - turnToRiverCalc), 4)
+            cardDict = Counter(cardVals)
 
-            return turnToRiverOdds
+        for val in cardDict:
+            if cardDict.get(val) == 2:
+                numOfPairs = numOfPairs + 1
+
+            if numOfPairs == 2:
+                return True
+
+        return False
+
+    def checkOneOverCardToOverPair(self, totalCards):
+        """ Check for an over pair draw.
+
+        Params:
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
+        cardRankVals = []
+        commCardRanks = []
+        handCardRank = 0
+        isHandCardOneOver = True
+        isHandCardTwoOver = True
+
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
+
+        for val in cardVals:
+            cardRankVal = cardRanks.get(val)
+            cardRankVals.append(cardRankVal)
+
+        commCardRanks = cardRankVals[-2:]
+        handCardRank = cardRankVals[0]
+
+        for rank in commCardRanks:
+            if handCardRank < rank:
+                isHandCardOneOver = False
+                break
+
+        handCardRank = cardRankVals[1]
+
+        for rank in commCardRanks:
+            if handCardRank < rank:
+                isHandCardTwoOver = False
+                break
+
+        if isHandCardOneOver and isHandCardTwoOver:
+            return False
+        elif not isHandCardOneOver and not isHandCardTwoOver:
+            return False
+        elif isHandCardOneOver or isHandCardTwoOver:
+            return True
+
+    def checkPocketPairToSet(self, totalCards):
+        """ Check for a set draw with a pocket pair.
+
+        totalCards -- list of all the cards in play
+        """
+        cardVals = []
+
+        for card in totalCards:
+            cardVal = card[:-1]
+            cardVals.append(cardVal)
+
+        if cardVals[0] == cardVals[1]:
+            return True
+
+        return False
+
+    def flopToRiverOdds(self, cardsLeftInDeck):
+        """ Calculate the odds of a winning hand flop to river.
+
+        Params:
+        cardsLeftInDeck -- int with the number of cards left in the deck
+        """
+        flopToRiverOdds = 0
+
+        flopToTurnCardsLeftAfterOuts = float(cardsLeftInDeck - self.currOuts)
+        flopToRiverCardsLeftInDeck = float(cardsLeftInDeck - 1)
+        flopToRiverCardsLeftAfterOuts = float(flopToRiverCardsLeftInDeck - self.currOuts)
+        cardsLeftInDeck = float(cardsLeftInDeck)
+        flopToRiverCalc = (flopToTurnCardsLeftAfterOuts/cardsLeftInDeck) * (flopToRiverCardsLeftAfterOuts/flopToRiverCardsLeftInDeck)
+        flopToRiverOdds = round((1 - flopToRiverCalc), 4)
+
+        return flopToRiverOdds
+
+    def turnToRiverOdds(self, cardsLeftInDeck):
+        """ Calculate the odds of a winning hand turn to river.
+
+        Params:
+        cardsLeftInDeck -- int with the number of cards left in deck
+        """
+        turnToRiverOdds = 0
+        cardsLeftAfterOuts = cardsLeftInDeck - self.currOuts
+        turnToRiverCalc = (float(cardsLeftAfterOuts)/float(cardsLeftInDeck))
+        turnToRiverOdds = round((1 - turnToRiverCalc), 4)
+
+        return turnToRiverOdds

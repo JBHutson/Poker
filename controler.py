@@ -28,7 +28,7 @@ class calcControler:
                         'Turn': '',
                         'River': ''
                         }
-                
+
         def setCardPicPath(self, cardVal):
                 """ Creates the path to the card immage.
 
@@ -43,7 +43,7 @@ class calcControler:
                 else:
                         raise Exception('Not a card')
 
-	def setHoleCard(self, holeCardNum, cardVal):
+        def setHoleCard(self, holeCardNum, cardVal):
                 """ Sets the selcted hole card to the given value.
 
                 Params:
@@ -105,7 +105,7 @@ class calcControler:
                 """ Get the initial hole card odds."""
                 iHandOdd = self.pCalc.initialHandOdds(self.playerNum, self.formatedHandVal)
                 return iHandOdd
-        
+
         def getHoleCardAction(self):
                 """ Get the initial hole card action."""
                 iHandOdd = self.getHoleCardOdds()
@@ -179,7 +179,7 @@ class calcControler:
                         action = 'Fold'
 
                 return action
-        
+
         def resetPointInPlay(self):
                 """ Resets the point in play """
                 self.pointInPlay = ''
