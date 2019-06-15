@@ -33,7 +33,11 @@ class calcControler:
                 """ Creates the path to the card immage.
 
                 Params:
-                cardVal -- string with the card value
+                cardVal (str): string with the card value
+
+                Returns:
+                cardPicPath (str): if exists, file path to card image
+                Exception: exception raised if the file path does not exist
                 """
                 cardPicPathEnd = cardVal + '.jpg'
                 currDirectory = os.getcwd()
@@ -47,8 +51,8 @@ class calcControler:
                 """ Sets the selcted hole card to the given value.
 
                 Params:
-                holeCardNum -- string dictating the chosen card
-                cardVal -- string containing the value of the card
+                holeCardNum (str): string dictating the chosen card
+                cardVal (str): string containing the value of the card
                 """
                 if holeCardNum == 'Hole 1':
                         holeCards['Hole 1'] = cardVal
@@ -59,8 +63,8 @@ class calcControler:
                 """ Sets the selcted community card to the given value.
 
                 Params:
-                commCardNum -- string dictating the chosen card
-                cardVal -- string containing the value of the card
+                commCardNum (ctr): string dictating the chosen card
+                cardVal (str): string containing the value of the card
                 """
                 if commCardNum == 'Flop 1':
                         commCards['Flop 1'] = cardVal
@@ -74,7 +78,12 @@ class calcControler:
                         commCards['River'] = cardVal
 
         def setHoleHandVal(self):
-                """ Creates a hole hand value in the required format"""
+                """ Creates a hole hand value in the required format
+
+                    Returns:
+                    Exception: exception raised if both hole cards have not
+                               been selected
+                """
                 self.formatedHandVal = ''
 
                 try:
@@ -97,17 +106,25 @@ class calcControler:
                 """ Set the number of players
 
                 Params:
-                players -- string with the number of players
+                players (str): string with the number of players
                 """
                 self.playerNum = players
 
         def getHoleCardOdds(self):
-                """ Get the initial hole card odds."""
+                """ Get the initial hole card odds.
+
+                    Returns:
+                    iHandodd (int): initial winning odds stat
+                """
                 iHandOdd = self.pCalc.initialHandOdds(self.playerNum, self.formatedHandVal)
                 return iHandOdd
 
         def getHoleCardAction(self):
-                """ Get the initial hole card action."""
+                """ Get the initial hole card action.
+
+                    Returns:
+                    iHandAction (str): the advised initial action to take
+                """
                 iHandOdd = self.getHoleCardOdds()
                 iHandAction = self.pCalc.initialHandAction(self.playerNum, iHandOdd)
 
@@ -117,15 +134,22 @@ class calcControler:
                 """ Get the pot odds.
 
                 Params:
-                costToCall -- int containing the how much is needed to call
-                potSize -- int containing the size of the pot
+                costToCall (int): int containing the how much is needed to call
+                potSize (int): int containing the size of the pot
+
+                Returns:
+                potOdds (int): pot odds stat
                 """
                 potOdds = self.pCalc.potOdds(costToCall, potSize)
 
                 return potOdds
 
         def getCurrentOuts(self):
-                """ Get the current number of outs """
+                """ Get the current number of outs
+
+                    Returns:
+                    currOuts (int): current number of outs for hand
+                """
                 currOuts = self.pCalc.outs(holeCards, commCards, self.pointInPlay)
 
                 return currOuts
@@ -134,8 +158,12 @@ class calcControler:
                 """ Check to see if the values passed for pot and bet are ints
 
                 Params:
-                pot -- int containing the size of the pot
-                bet -- int containing the size of the bet
+                pot (int): int containing the size of the pot
+                bet (int): int containing the size of the bet
+
+                Returns:
+                Exception: exception raised if the inputed values are not
+                both ints
                 """
                 try:
                         val = int(pot)
@@ -159,7 +187,11 @@ class calcControler:
                         raise Exception('Must Input the correct Number of Comm cards')
 
         def getHandOdds(self):
-                """ Get the current hand odds after initial hole odds """
+                """ Get the current hand odds after initial hole odds
+
+                    Returns:
+                    currOdds (int): the current hand odds
+                """
                 currOdds = self.pCalc.handOdds(self.playerNum, self.pointInPlay)
 
                 return currOdds
@@ -168,8 +200,11 @@ class calcControler:
                 """ Get the action to take after the initial hole action.
 
                 Params:
-                currPotOdds -- int containing the current pot odds
-                currHandOdds -- int containing the current hand odds
+                currPotOdds (int): int containing the current pot odds
+                currHandOdds (int): int containing the current hand odds
+
+                Returns:
+                action (str): action to be taken
                 """
                 action = ''
 

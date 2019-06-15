@@ -5,8 +5,8 @@ from collections import Counter
 
 class calculator:
     """ Calculator class that contains all of the functions
-        related to calculating outs and odds.
-        """
+    related to calculating outs and odds.
+    """
     def __init__(self):
         self.currOuts = 0
 
@@ -14,9 +14,12 @@ class calculator:
             """ Calculate the number of outs.
 
             Params:
-            holeCards -- list of hole cards
-            commCards -- list of community cards
-            pointOfPlay -- string indicating the point in play
+            holeCards (list): list of hole cards
+            commCards (list): list of community cards
+            pointOfPlay (str): string indicating the point in play
+
+            Returns:
+            currOuts (int): the number of outs
             """
             totalCards = []
             self.currOuts = 0
@@ -72,8 +75,11 @@ class calculator:
             and point of play.
 
         Params:
-        playerNum -- string with number of player
-        pointOfPlay -- string showing point in play
+        playerNum (str): string with number of player
+        pointOfPlay (str): string showing point in play
+
+        Returns:
+        currHandOdds (int): odds stat for current hand
         """
         currHandOdds = 0
         cardsLeftInDeck = 52
@@ -110,8 +116,11 @@ class calculator:
         """ Calculate the pot odds.
 
         Params:
-        currBet -- Int containing how much you have to bet
-        potSize -- Int containing the current pot size
+        currBet (int): Int containing how much you have to bet
+        potSize (int): Int containing the current pot size
+
+        Returns:
+        currPotOdds (int): current pot odds stat
         """
         call = currBet
         currPotOdds = (call / (potSize + currBet))
@@ -123,8 +132,11 @@ class calculator:
         """ Decide whether to call or fold.
 
         Params:
-        currPotOdds -- int containing the current pot odds
-        currHandOdds -- int containing the current hand odds
+        currPotOdds (int): int containing the current pot odds
+        currHandOdds (int):  int containing the current hand odds
+
+        Returns:
+        returns true if the player should call, false if they should fold
         """
         if (currPotOdds <= currHandOdds):
             return True
@@ -135,8 +147,11 @@ class calculator:
         """ Find the initial hand odds of pocket cards.
 
         Params:
-        playerNum -- string containing the number of players
-        holeCardVal -- string containing the value of hole cards
+        playerNum (str): string containing the number of players
+        holeCardVal (str): string containing the value of hole cards
+
+        Returns:
+        iHandOdds (int): the initial hand odds
         """
         if playerNum == '10 Players' or playerNum == '9 Players':
             iHandOdds = tenPlayerHoleWinOdds.get(holeCardVal)
@@ -157,8 +172,11 @@ class calculator:
         """ Decide whether to call or fold pocket cards.
 
         Params:
-        playerNum -- string containing the number of players
-        iHandOdds -- int containing initial hand card odds
+        playerNum (str): string containing the number of players
+        iHandOdds (int): int containing initial hand card odds
+
+        Returns:
+        returns initial hand action
         """
         if playerNum == '10 Players':
             if iHandOdds >= .1153:
@@ -195,7 +213,10 @@ class calculator:
         """ Check if there is an open straight draw.
 
         Params:
-        totalCards -- list containing all of the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardRankVals = []
         sortedCardRankVals = []
@@ -235,7 +256,10 @@ class calculator:
         """ Check for an inside straight draw.
 
         Params:
-        totalCards -- list containing all of the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardRankVals = []
         sortedCardRankVals = []
@@ -291,7 +315,10 @@ class calculator:
         """ Check for a flush draw.
 
         Params:
-        totalCards -- list of all the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardSuitVals = []
 
@@ -310,7 +337,11 @@ class calculator:
     def checkTwoOverCardsToOverPair(self, totalCards):
         """ Check for an over pair draw.
 
-        totalCards -- list of all the cards in play
+        Params:
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
         cardRankVals = []
@@ -352,7 +383,10 @@ class calculator:
         """ Check for a full house or four of a kind draw.
 
         Params:
-        totalCards -- list of all the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
 
@@ -372,7 +406,10 @@ class calculator:
         """ Check for a pair draw.
 
         Params:
-        totalCards -- list of all the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
 
@@ -392,7 +429,10 @@ class calculator:
         """ Check for two pair or set draw
 
         Params:
-        totalCards -- list of all the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
 
@@ -415,7 +455,10 @@ class calculator:
         """ Check for a full house draw.
 
         Params:
-        totalCards -- list of all the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
         numOfPairs = 0
@@ -439,7 +482,10 @@ class calculator:
         """ Check for an over pair draw.
 
         Params:
-        totalCards -- list of all the cards in play
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
         cardRankVals = []
@@ -481,7 +527,11 @@ class calculator:
     def checkPocketPairToSet(self, totalCards):
         """ Check for a set draw with a pocket pair.
 
-        totalCards -- list of all the cards in play
+        Params:
+        totalCards (list): list containing all of the cards in play
+
+        Returns:
+        Bool: true if there is a draw, false if not
         """
         cardVals = []
 
@@ -498,7 +548,10 @@ class calculator:
         """ Calculate the odds of a winning hand flop to river.
 
         Params:
-        cardsLeftInDeck -- int with the number of cards left in the deck
+        cardsLeftInDeck (int): int with the number of cards left in the deck
+
+        Returns:
+        flopToRiverOdds (float): odds of getting a winning hand flop to river
         """
         flopToRiverOdds = 0
 
@@ -514,8 +567,11 @@ class calculator:
     def turnToRiverOdds(self, cardsLeftInDeck):
         """ Calculate the odds of a winning hand turn to river.
 
-        Params:
-        cardsLeftInDeck -- int with the number of cards left in deck
+         Params:
+        cardsLeftInDeck (int): int with the number of cards left in the deck
+
+        Returns:
+        turnToRiverOdds (float): odds of getting a winning hand turn to river
         """
         turnToRiverOdds = 0
         cardsLeftAfterOuts = cardsLeftInDeck - self.currOuts
