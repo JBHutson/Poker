@@ -2,6 +2,8 @@
 
 from collections import Counter
 
+from data import *
+
 
 class calculator:
     """ Calculator class that contains all of the functions
