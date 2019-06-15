@@ -55,9 +55,9 @@ class calcControler:
                 cardVal (str): string containing the value of the card
                 """
                 if holeCardNum == 'Hole 1':
-                        holeCards['Hole 1'] = cardVal
+                        self.holeCards['Hole 1'] = cardVal
                 elif holeCardNum == 'Hole 2':
-                        holeCards['Hole 2'] = cardVal
+                        self.holeCards['Hole 2'] = cardVal
 
         def setCommCard(self, commCardNum, cardVal):
                 """ Sets the selcted community card to the given value.
@@ -67,15 +67,15 @@ class calcControler:
                 cardVal (str): string containing the value of the card
                 """
                 if commCardNum == 'Flop 1':
-                        commCards['Flop 1'] = cardVal
+                        self.commCards['Flop 1'] = cardVal
                 elif commCardNum == 'Flop 2':
-                        commCards['Flop 2'] = cardVal
+                        self.commCards['Flop 2'] = cardVal
                 elif commCardNum == 'Flop 3':
-                        commCards['Flop 3'] = cardVal
+                        self.commCards['Flop 3'] = cardVal
                 elif commCardNum == 'Turn':
-                        commCards['Turn'] = cardVal
+                        self.commCards['Turn'] = cardVal
                 elif commCardNum == 'River':
-                        commCards['River'] = cardVal
+                        self.commCards['River'] = cardVal
 
         def setHoleHandVal(self):
                 """ Creates a hole hand value in the required format
