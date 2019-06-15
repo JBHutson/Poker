@@ -150,7 +150,7 @@ class calcControler:
                     Returns:
                     currOuts (int): current number of outs for hand
                 """
-                currOuts = self.pCalc.outs(holeCards, commCards, self.pointInPlay)
+                currOuts = self.pCalc.outs(holeCards, self.commCards, self.pointInPlay)
 
                 return currOuts
 
@@ -175,8 +175,8 @@ class calcControler:
                 """ Set the point of play in a particular hand """
                 commCardsNum = 0
 
-                for card in commCards:
-                        if commCards[card] != '':
+                for card in self.commCards:
+                        if self.commCards[card] != '':
                                 commCardsNum = commCardsNum + 1
 
                 if commCardsNum == 3 and self.pointInPlay == '':
