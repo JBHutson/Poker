@@ -150,7 +150,7 @@ class calcControler:
                     Returns:
                     currOuts (int): current number of outs for hand
                 """
-                currOuts = self.pCalc.outs(holeCards, self.commCards, self.pointInPlay)
+                currOuts = self.pCalc.outs(self.holeCards, self.commCards, self.pointInPlay)
 
                 return currOuts
 

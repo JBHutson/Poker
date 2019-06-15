@@ -11,6 +11,7 @@ class calculator:
     """
     def __init__(self):
         self.currOuts = 0
+        pass
 
     def outs(self, holeCards, commCards, pointOfPlay):
             """ Calculate the number of outs.
@@ -25,6 +26,7 @@ class calculator:
             """
             totalCards = []
             self.currOuts = 0
+            currCountIndex = 0
 
             if pointOfPlay == 'Flop':
                 commCardsToCount = 2
@@ -35,13 +37,13 @@ class calculator:
                 currCard = holeCards.get(card)
                 totalCards.append(currCard)
 
-                currCountIndex = 0
-
             for card in commCards:
                 currCard = commCards.get(card)
                 if currCountIndex <= commCardsToCount:
                     totalCards.append(currCard)
                     currCountIndex = currCountIndex + 1
+                else:
+                    break
 
             if self.checkOpenStraightDraw(totalCards) and self.checkFlushDraw(totalCards):
                 self.currOuts = 15
@@ -273,45 +275,45 @@ class calculator:
             cardRank = cardRanks.get(cardVal)
             cardRankVals.append(cardRank)
 
-            sortedCardRankVals = sorted(cardRankVals)
+        sortedCardRankVals = sorted(cardRankVals)
 
-            lenOfCards = len(cardRankVals)
+        lenOfCards = len(cardRankVals)
 
-            for x in range(lenOfCards - 1):
-                if (sortedCardRankVals[x] + 1) == sortedCardRankVals[(x + 1)]:
-                    if sortedCardRankVals[x] not in consecutiveCards:
-                        consecutiveCards.append(sortedCardRankVals[x])
-                    if sortedCardRankVals[(x + 1)] not in consecutiveCards:
-                        consecutiveCards.append(sortedCardRankVals[(x + 1)])
+        for x in range(lenOfCards - 1):
+            if (sortedCardRankVals[x] + 1) == sortedCardRankVals[(x + 1)]:
+                if sortedCardRankVals[x] not in consecutiveCards:
+                    consecutiveCards.append(sortedCardRankVals[x])
+                if sortedCardRankVals[(x + 1)] not in consecutiveCards:
+                    consecutiveCards.append(sortedCardRankVals[(x + 1)])
 
-            if len(consecutiveCards) < 3:
-                return False
-            elif len(consecutiveCards) == 4:
-                if (consecutiveCards[1] + 2) == consecutiveCards[2]:
-                    return True
-                if consecutiveCards[0] == 1 or consecutiveCards[-1] == 13:
-                    if (consecutiveCards[0] + 1) != consecutiveCards[1]:
-                        return False
-                    elif (consecutiveCards[1] + 1) != consecutiveCards[2]:
-                        return False
-                    elif (consecutiveCards[2] + 1) != consecutiveCards[3]:
-                        return False
-                    else:
-                        return True
-            elif len(consecutiveCards) == 3:
-                index = sortedCardRankVals.index(consecutiveCards[0])
-                if index == 0:
-                    pass
-                elif sortedCardRankVals[index] == (sortedCardRankVals[index - 1] + 2):
-                    return True
-
-                index = sortedCardRankVals.index(consecutiveCards[-1])
-                if index == (len(sortedCardRankVals) - 1):
-                        pass
-                elif sortedCardRankVals[index] == (sortedCardRankVals[index + 1] - 2):
-                    return True
-                else:
+        if len(consecutiveCards) < 3:
+            return False
+        elif len(consecutiveCards) == 4:
+            if (consecutiveCards[1] + 2) == consecutiveCards[2]:
+                return True
+            if consecutiveCards[0] == 1 or consecutiveCards[-1] == 13:
+                if (consecutiveCards[0] + 1) != consecutiveCards[1]:
                     return False
+                elif (consecutiveCards[1] + 1) != consecutiveCards[2]:
+                    return False
+                elif (consecutiveCards[2] + 1) != consecutiveCards[3]:
+                    return False
+                else:
+                    return True
+        elif len(consecutiveCards) == 3:
+            index = sortedCardRankVals.index(consecutiveCards[0])
+            if index == 0:
+                pass
+            elif sortedCardRankVals[index] == (sortedCardRankVals[index - 1] + 2):
+                return True
+
+            index = sortedCardRankVals.index(consecutiveCards[-1])
+            if index == (len(sortedCardRankVals) - 1):
+                    pass
+            elif sortedCardRankVals[index] == (sortedCardRankVals[index + 1] - 2):
+                return True
+            else:
+                return False
 
     def checkFlushDraw(self, totalCards):
         """ Check for a flush draw.
@@ -328,7 +330,7 @@ class calculator:
             cardSuit = card[-1]
             cardSuitVals.append(cardSuit)
 
-            suitDict = Counter(cardSuitVals)
+        suitDict = Counter(cardSuitVals)
 
         for val in suitDict:
             if suitDict.get(val) == 4:
@@ -361,25 +363,25 @@ class calculator:
             cardRankVal = cardRanks.get(val)
             cardRankVals.append(cardRankVal)
 
-            commCardRanks = cardRankVals[-2:]
+        commCardRanks = cardRankVals[-2:]
 
-            handCardRank1 = cardRankVals[0]
-            handCardRank2 = cardRankVals[1]
+        handCardRank1 = cardRankVals[0]
+        handCardRank2 = cardRankVals[1]
 
-            for rank in commCardRanks:
-                if handCardRank1 <= rank:
-                    isHandCardOneOver = False
-                    break
+        for rank in commCardRanks:
+            if handCardRank1 <= rank:
+                isHandCardOneOver = False
+                break
 
-            for rank in commCardRanks:
-                if handCardRank2 <= rank:
-                    isHandCardTwoOver = False
-                    break
+        for rank in commCardRanks:
+            if handCardRank2 <= rank:
+                isHandCardTwoOver = False
+                break
 
-            if not isHandCardOneOver or not isHandCardTwoOver:
-                return False
-            if isHandCardOneOver and isHandCardTwoOver:
-                return True
+        if not isHandCardOneOver or not isHandCardTwoOver:
+            return False
+        if isHandCardOneOver and isHandCardTwoOver:
+            return True
 
     def checkSetToFullHouseOrFourOfAKind(self, totalCards):
         """ Check for a full house or four of a kind draw.
@@ -419,7 +421,7 @@ class calculator:
             cardVal = card[:-1]
             cardVals.append(cardVal)
 
-            cardDict = Counter(cardVals)
+        cardDict = Counter(cardVals)
 
         for val in cardDict:
             if cardDict.get(val) != 1:
@@ -442,7 +444,7 @@ class calculator:
             cardVal = card[:-1]
             cardVals.append(cardVal)
 
-            cardDict = Counter(cardVals)
+        cardDict = Counter(cardVals)
 
         if cardVals[0] == cardVals[1]:
             return False
@@ -469,14 +471,14 @@ class calculator:
             cardVal = card[:-1]
             cardVals.append(cardVal)
 
-            cardDict = Counter(cardVals)
+        cardDict = Counter(cardVals)
 
         for val in cardDict:
             if cardDict.get(val) == 2:
                 numOfPairs = numOfPairs + 1
 
-            if numOfPairs == 2:
-                return True
+        if numOfPairs == 2:
+            return True
 
         return False
 
