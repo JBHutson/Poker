@@ -87,8 +87,8 @@ class calcControler:
                 self.formatedHandVal = ''
 
                 try:
-                        holeOneVal = holeCards.get('Hole 1')
-                        holeTwoVal = holeCards.get('Hole 2')
+                        holeOneVal = self.holeCards.get('Hole 1')
+                        holeTwoVal = self.holeCards.get('Hole 2')
 
                         self.formatedHandVal = holeOneVal[:-1]
                         self.formatedHandVal = self.formatedHandVal + holeTwoVal[:-1]
