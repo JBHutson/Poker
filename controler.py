@@ -86,12 +86,32 @@ class calcControler:
                 """
                 self.formatedHandVal = ''
 
+                valToInt = {
+                    '2': 1,
+                    '3': 2,
+                    '4': 3,
+                    '5': 4,
+                    '6': 5,
+                    '7': 6,
+                    '8': 7,
+                    '9': 8,
+                    '10': 9,
+                    'J': 11,
+                    'Q': 12,
+                    'K': 13,
+                    'A': 14,
+                }
+
                 try:
                         holeOneVal = self.holeCards.get('Hole 1')
                         holeTwoVal = self.holeCards.get('Hole 2')
 
-                        self.formatedHandVal = holeOneVal[:-1]
-                        self.formatedHandVal = self.formatedHandVal + holeTwoVal[:-1]
+                        if valToInt[holeOneVal[:-1]] > valToInt[holeTwoVal[:-1]]:
+                                self.formatedHandVal = self.formatedHandVal + holeOneVal[:-1]
+                                self.formatedHandVal = self.formatedHandVal + holeTwoVal[:-1]
+                        elif valToInt[holeOneVal[:-1]] < valToInt[holeTwoVal[:-1]]:
+                                self.formatedHandVal = self.formatedHandVal + holeTwoVal[:-1]
+                                self.formatedHandVal = self.formatedHandVal + holeOneVal[:-1]
 
                         if holeOneVal[:-1] == holeTwoVal[:-1]:
                                 self.formatedHandVal = self.formatedHandVal + '_P'
